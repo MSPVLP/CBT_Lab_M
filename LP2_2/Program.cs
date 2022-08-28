@@ -6,16 +6,22 @@ namespace LP2_2
     {
         static void Main(string[] args)
         {
-            char[] vowels = new char[] { 'a', 'e', 'i', 'o', 'u' };
+            string vowels = "aeiouAIEOU";
+            string input_str;
 
-            char input_char;
             Console.WriteLine("Enter a Single Character");
-            input_char = char.Parse(Console.ReadLine());                // Reads a Character 
-            Console.WriteLine("Given Character is  " + input_char);     // Prints the given character
-            
-            // Condition for vowel checking
-            if (vowels.Contains(input_char))
-                Console.WriteLine(" Entered Character is Vowel");
+            input_str = Console.ReadLine();         // Reads input string
+            if (input_str.Length == 1)              // Check if string has single charecter only
+            {
+                Console.WriteLine("Given Character is  " + input_str);     // Prints the given character
+
+                if (vowels.Contains(input_str))         // check if given charecter is present in "aeiouAEIOU" string
+                    Console.WriteLine(" Entered Character is Vowel.");
+                else 
+                    Console.WriteLine(" Entered Charecter is not vowel.");
+            }
+            else Console.WriteLine("ERROR:Enter 1 charecter only.");
+            Console.ReadKey();
         }
     }
 }
