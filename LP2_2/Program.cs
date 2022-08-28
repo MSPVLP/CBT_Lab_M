@@ -20,7 +20,8 @@ namespace LP2_2
                 else 
                     Console.WriteLine(" Entered Charecter is not vowel.");
             }
-            else Console.WriteLine("ERROR:Enter 1 charecter only.");
+            else
+                Console.WriteLine("ERROR:Enter 1 charecter only.");
             Console.ReadKey();
         }
     }
