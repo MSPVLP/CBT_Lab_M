@@ -14,13 +14,13 @@ namespace Lab_Practice_1_1
 
             if (input_str.Length != 1)               // Check if exactly 1 char entered
             {
-                Console.WriteLine("Enter exactly 1 charecter.");
+                Console.WriteLine("ERROR: Enter exactly 1 charecter only.");
             }
             else
             {
                 input_char = char.Parse(input_str);     // Convert string to char
                 
-                Console.WriteLine("Given Character is " + input_char);
+                Console.WriteLine("Given character is: " + input_char);
                 
                 if (Char.IsLower(input_char))
                     Console.WriteLine("The entered character is Lowercase.");
@@ -29,7 +29,7 @@ namespace Lab_Practice_1_1
                     Console.WriteLine("The entered character is Uppercase.");
                 
                 else
-                    Console.WriteLine("The character is not an alphabet.");
+                    Console.WriteLine("The entered character is not an alphabet.");
             }
 
             Console.WriteLine("Press any key to continue . . .");
