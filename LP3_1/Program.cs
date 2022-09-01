@@ -46,8 +46,7 @@ namespace LP3_1
             Console.WriteLine("The result is {0}", result);
             Console.ReadKey();
         }
-
-        //Addition  
+                //Addition  
         public static int Addition(int input_1, int input_2)
         {
             int result = input_1 + input_2;

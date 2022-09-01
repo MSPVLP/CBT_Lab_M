@@ -10,7 +10,7 @@
 namespace Ex_7 {
     
     
-    public partial class Login {
+    public partial class login {
         
         /// <summary>
         /// form1 control.

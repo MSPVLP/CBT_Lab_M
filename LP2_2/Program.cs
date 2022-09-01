@@ -10,12 +10,15 @@ namespace LP2_2
             string input_str;
 
             Console.WriteLine("Enter a Single Character");
-            input_str = Console.ReadLine();         // Reads input string
-            if (input_str.Length == 1)              // Check if string has single charecter only
+            // Reads input string
+            input_str = Console.ReadLine();
+            // Check if string has single charecter only
+            if (input_str.Length == 1)              
             {
-                Console.WriteLine("Given Character is  " + input_str);     // Prints the given character
-
-                if (vowels.Contains(input_str))         // check if given charecter is present in "aeiouAEIOU" string
+                // Prints the given character
+                Console.WriteLine("Given Character is  " + input_str);
+                // check if given charecter is present in "aeiouAEIOU" string
+                if (vowels.Contains(input_str))         
                     Console.WriteLine(" Entered Character is Vowel.");
                 else 
                     Console.WriteLine(" Entered Charecter is not vowel.");

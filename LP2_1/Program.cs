@@ -7,14 +7,16 @@ namespace LP2_1
         {
             string input_str;
             char input_char;
-            Console.WriteLine("Enter a Single Character");          
-            input_str = (Console.ReadLine());        // Reads an input from user
-
-            if (input_str.Length != 1)              // Checks if user entered input is 1 character
+            Console.WriteLine("Enter a Single Character");
+            // Reads an input from user
+            input_str = (Console.ReadLine());        
+            // Checks if user entered input is 1 character
+            if (input_str.Length != 1)              
                 Console.WriteLine("Given Input is  " + input_str);
             else
             {
-                input_char = char.Parse(input_str);        // Converts string to a Single Character
+                // Converts string to a Single Character
+                input_char = char.Parse(input_str);        
                 Console.WriteLine("Given Character is  " + input_char);
                 // Condition for vowel checking
                 if (input_char == 'a' || input_char == 'e' || input_char == 'i' || input_char == 'o' || input_char == 'u' 
