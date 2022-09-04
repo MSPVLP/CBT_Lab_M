@@ -12,10 +12,13 @@ namespace LP3_1
             Console.WriteLine("Press 3 for Multiplication");
             Console.WriteLine("Press 4 for Division \n");
             int action = Convert.ToInt32(Console.ReadLine());
+
             Console.WriteLine("Enter 1st input");
             int input_1 = Convert.ToInt32(Console.ReadLine());
+
             Console.WriteLine("Enter 2nd input");
             int input_2 = Convert.ToInt32(Console.ReadLine());
+
             int result = 0;
             switch (action)
             {
@@ -50,25 +53,25 @@ namespace LP3_1
 
 
 
-        //Addition  
+        // Addition  
         public static int Addition(int input_1, int input_2)
         {
             int result = input_1 + input_2;
             return result;
         }
-        //Substraction  
+        // Substraction  
         public static int Subtraction(int input_1, int input_2)
         {
             int result = input_1 + input_2;
             return result;
         }
-        //Multiplication  
+        // Multiplication  
         public static int Multiplication(int input_1, int input_2)
         {
             int result = input_1 + input_2;
             return result;
         }
-        //Division  
+        // Division  
         public static int Division(int input_1, int input_2)
         {
             int result = input_1 + input_2;
