@@ -60,7 +60,8 @@ namespace Ex_9
             switch (btn_save.Text)
             {
                 case "Save":
-                    cmd = new SqlCommand("insert into student_master(student_rno,student_name,dept_name,address,mobile_no)values(@rno,@stuname,@dept,@address,@mobileno)", con);
+                    sql = "insert into student_master(student_rno,student_name,dept_name,address,mobile_no)values(@rno,@stuname,@dept,@address,@mobileno)";
+                    cmd = new SqlCommand(sql, con);
                     cmd.Parameters.Add("@rno", SqlDbType.Int).Value = txt_rno.Text;
                     cmd.Parameters.Add("@stuname", SqlDbType.VarChar).Value = txt_stuname.Text;
                     cmd.Parameters.Add("@dept", SqlDbType.VarChar).Value = cmb_deptname.SelectedItem.ToString();
@@ -75,7 +76,8 @@ namespace Ex_9
                     clear();
                     break;
                 case "Update":
-                    cmd = new SqlCommand("update student_master set student_name=@stuname,dept_name=@dept,address=@address,mobile_no=@mobileno where student_rno=@rno", con);
+                    sql = "update student_master set student_name=@stuname,dept_name=@dept,address=@address,mobile_no=@mobileno where student_rno=@rno";
+                    cmd = new SqlCommand(sql, con);
                     cmd.Parameters.Add("@rno", SqlDbType.VarChar).Value = cmb_Rno.SelectedItem.ToString();
                     cmd.Parameters.Add("@stuname", SqlDbType.VarChar).Value = txt_stuname.Text;
                     cmd.Parameters.Add("@dept", SqlDbType.VarChar).Value = cmb_deptname.SelectedItem.ToString();
@@ -90,7 +92,8 @@ namespace Ex_9
                     clear();
                     break;
                 case "Delete":
-                    cmd = new SqlCommand("delete from student_master where student_rno=@rno", con);
+                    sql = "delete from student_master where student_rno=@rno";
+                    cmd = new SqlCommand(sql, con);
                     cmd.Parameters.Add("@rno", SqlDbType.VarChar).Value = cmb_Rno.SelectedItem.ToString();
                     
                     x = cmd.ExecuteNonQuery();
@@ -110,7 +113,6 @@ namespace Ex_9
         {
             con.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=E:\\CBT_LabCode\\CBT_Lab_N\\Ex_9\\student_details_db.mdf;Integrated Security=True";
             con.Open();
-
         }
         public void clear()
         {
@@ -124,9 +126,7 @@ namespace Ex_9
         public void BindData()
         {
             // Call connect function 
-            connect();
-            // COMMAND OBJECT
-            
+            connect(); 
             cmd.Connection = con;
             cmd.CommandText = "select * from student_master ";
             DataSet ds = new DataSet();
@@ -156,7 +156,6 @@ namespace Ex_9
         {
             BindData();
         }
-
         private void cmb_Rno_SelectedIndexChanged(object sender, EventArgs e)
         {
             connect();
@@ -172,7 +171,6 @@ namespace Ex_9
                 txt_mobile.Text = dr.GetString(4);
             }
             con.Close();
-
         }
     }
 }
