@@ -126,14 +126,14 @@
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(219, 25);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(448, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(134, 24);
+            this.label2.Size = new System.Drawing.Size(248, 32);
             this.label2.TabIndex = 13;
             this.label2.Text = "Student Details";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label1
             // 
@@ -154,6 +154,7 @@
             this.btn_save.TabIndex = 17;
             this.btn_save.Text = "Save";
             this.btn_save.UseVisualStyleBackColor = true;
+            this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
             // 
             // cmb_deptname
             // 
@@ -252,6 +253,7 @@
             this.cmb_Rno.Size = new System.Drawing.Size(267, 28);
             this.cmb_Rno.TabIndex = 22;
             this.cmb_Rno.Visible = false;
+            this.cmb_Rno.SelectedIndexChanged += new System.EventHandler(this.cmb_Rno_SelectedIndexChanged);
             // 
             // dataGridView1
             // 
@@ -283,6 +285,7 @@
             this.Controls.Add(this.cmb_deptname);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
