@@ -14,7 +14,7 @@ namespace Ex4
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
         
-        // Program to Find Day and Mongth
+        // Program to Find Day and Month
             txt_day.Text = dateTimePicker1.Value.Day.ToString();
             txt_month.Text = dateTimePicker1.Value.Month.ToString();
             txt_year.Text = dateTimePicker1.Value.Year.ToString();
