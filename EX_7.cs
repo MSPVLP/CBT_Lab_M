@@ -18,8 +18,8 @@ public class Ex_7
                 }
                 else
                 {
-        		// check whether given username and password is equal to
-        		//   “Computer” & “mspvl”
+        		// Program tocheck whether given username and password is equal to
+        		//   “Computer” & “mspvl” 
                     if(txtuname.Text=="Computer" && txtupass.Text=="mspvl")
                     {
                         Lbl_result.Text = "Login Success";
