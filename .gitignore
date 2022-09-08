@@ -10,6 +10,9 @@
 *.userosscache
 *.sln.docstates
 
+# database lock files
+*.ldf
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
