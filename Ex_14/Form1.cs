@@ -11,14 +11,19 @@ namespace Ex_14
         {
             InitializeComponent();
         }
+        
         //CONNECTION OBJECT
         SqlConnection con = new SqlConnection();
+
         // COMMAND OBJECT
         SqlCommand cmd = new SqlCommand(); 
         DataSet ds = new DataSet();
+        
         private void rdb_select_CheckedChanged(object sender, EventArgs e)
         {
-            con.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=E:\\CBT_LabCode\\CBT_Lab_N\\Ex_14\\student_details_db_14.mdf;Integrated Security=True;Integrated Security=True";
+            openFileDialog1.ShowDialog();
+            
+            con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + openFileDialog1.FileName + @";Integrated Security=True;Integrated Security=True";
             con.Open();
            
             cmd.Connection = con;
