@@ -6,9 +6,9 @@ namespace LP1_2
     {
         static void Main(string[] args)
         {
-            Console.Write("\n\nCheck whether a character is lower case or upper case :\n");
+            Console.Write("\n\nProgram to Check whether a character is lower case or upper case :\n");
             Console.Write("------------------------------------------------------------\n");
-            Console.Write("Input a character: ");
+            Console.Write("Input a Single character : ");
             char ch = (char)Console.Read();
             // Call of Function
             checkCase(ch);

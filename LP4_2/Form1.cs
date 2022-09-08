@@ -13,7 +13,6 @@ namespace LP4_2
         {
             listBox1.Items.Add(textBox1.Text);
         }
-
         private void listBox1_SelectedValueChanged(object sender, EventArgs e)
         {
             DateTime currentDate1 = DateTime.Now;
