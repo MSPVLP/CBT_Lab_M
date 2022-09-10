@@ -11,17 +11,17 @@ namespace Ex_4
         }
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
+            DateTime dt = dateTimePicker1.Value;
             //Displays the day number
-            txt_day.Text = dateTimePicker1.Value.Day.ToString();
+            txt_day.Text = dt.Day.ToString();
             // Displays the month number
-            txt_month.Text = dateTimePicker1.Value.Month.ToString();
+            txt_month.Text = dt.Month.ToString();
             // Displays the year
-            txt_year.Text = dateTimePicker1.Value.Year.ToString();
-
+            txt_year.Text = dt.Year.ToString();
             //Displays the day
-            txt_dayname.Text = dateTimePicker1.Value.ToString("dddd");
+            txt_dayname.Text = dt.ToString("dddd");
             //Displays the month name
-            txt_monthname.Text = dateTimePicker1.Value.ToString("MMMM");
+            txt_monthname.Text = dt.ToString("MMMM");
         }
     }
 }

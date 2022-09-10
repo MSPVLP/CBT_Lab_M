@@ -14,12 +14,10 @@ namespace LP4_3
             DateTime currentDate1 = DateTime.Now;
             DateTime addedDate = currentDate1.AddDays(int.Parse(txt_input.Text));
             MessageBox.Show(addedDate.ToString("F"));
-
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             txt_current_date.Text = DateTime.Now.ToString();
-
         }
         private void btn_add_month_Click(object sender, EventArgs e)
         {

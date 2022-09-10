@@ -11,16 +11,15 @@ namespace LP4_2
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            // Getting the string form of the current date in
-            // different format  
+            // Add "custom format text" entered by user to list box
+            listBox1.Items.Add(textBox1.Text);
+        }
+        private void listBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            // Display current datetime in lable
+            // using format string from list box
             DateTime currentDate1 = DateTime.Now;
-            MessageBox.Show(currentDate1.ToString("dddd, dd MMMM yyyy"));
-            MessageBox.Show(currentDate1.ToString("MM/dd/yyyy HH:mm"));
-            MessageBox.Show(currentDate1.ToString("MM/dd/yyyy hh:mm tt"));
-            MessageBox.Show(currentDate1.ToString("MM/dd/yyyy H:mm"));
-            MessageBox.Show(currentDate1.ToString("MM/dd/yyyy h:mm tt"));
-            MessageBox.Show(currentDate1.ToString("MM/dd/yyyy HH:mm:ss"));
-            MessageBox.Show(currentDate1.ToString("MMMM dd"));
+            label1.Text = currentDate1.ToString(listBox1.Text);
         }
     }
 }

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<StuDetails>
+<Sem>  
+  		<sub1>C Programming</sub1>
+  		<Mark1>100</Mark1>
+  		<sub2>BEEE</sub2>
+  		<Mark2>90</Mark2>
+  		<sub3>Operating Systems</sub3>
+  		<Mark3>80</Mark3>
+  	<Year_of_passing>2016</Year_of_passing>  
+</Sem>
+  <Sem>
+    	<sub1>JAVA Programming</sub1>
+    	<Mark1>100</Mark1>
+    	<sub2>Data Structures and Algorithm</sub2>
+    	<Mark2>90</Mark2>
+    	<sub3>Computer Architecture</sub3>
+    	<Mark3>80</Mark3>
+    	<Year_of_passing>2016</Year_of_passing>
+  </Sem>
+  <Sem>
+    <sub1>.NET Programming</sub1>
+    <Mark1>100</Mark1>
+    <sub2>Web Programming</sub2>
+    <Mark2>90</Mark2>
+    <sub3>RDBMS</sub3>
+    <Mark3>80</Mark3>
+    <Year_of_passing>2017</Year_of_passing>
+  </Sem>
+  </StuDetails>
