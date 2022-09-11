@@ -19,4 +19,11 @@
       </xs:complexType>
     </xs:element>
   </xs:schema>
+  <student_master>
+    <student_rno>12345</student_rno>
+    <student_name>Raju</student_name>
+    <dept_name>Computer</dept_name>
+    <address>Sivanthipuram</address>
+    <mobile_no>9874563210</mobile_no>
+  </student_master>
 </NewDataSet>

@@ -1,7 +1,4 @@
 ﻿using System;
-
-using System.Data;
-using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace Ex_9
@@ -12,161 +9,119 @@ namespace Ex_9
         {
             InitializeComponent();
         }
+        int score = 0;
+        int i = -1;
+        int a = 0;
+        DateTime startTime;
+        string[] questions = new string[]
+            {
+                "The type float can be safely converted to___?",
+                "Default Property for a textbox control______?",
+                "What is the operator used to create object?",
+                "________loop repeats group of statement for each element of an array?",
+                "A _________variable is one that is declared inside a method?"
 
-        //CONNECTION OBJECT
-        SqlConnection con = new SqlConnection();
-        // COMMAND OBJECT
-        SqlCommand cmd = new SqlCommand();
-        string sql;
-        private void rdb_Edit_CheckedChanged(object sender, EventArgs e)
-        {
-            cmb_Rno.Visible = true;
-            txt_rno.Visible = false;
-            btn_save.Text = "Update";
-            clear();
-            LoadData();
-        }
-        private void rdb_add_CheckedChanged(object sender, EventArgs e)
-        {
-            cmb_Rno.Visible = false;
-            txt_rno.Visible = true;
-            btn_save.Text = "Save";
-            clear(); 
-        } 
-        private void rdb_delete_CheckedChanged(object sender, EventArgs e)
-        {
-            cmb_Rno.Visible = true;
-            txt_rno.Visible = false;
-            btn_save.Text = "Delete";
-            clear();
-            LoadData();
-        }
-        private void rdb_select_CheckedChanged(object sender, EventArgs e)
-        {
-            cmb_Rno.Visible = false;
-            txt_rno.Visible = true;
-            rdb_add.Checked = false;
-            btn_save.Text = "Add";
-            BindData();
-        }
-        private void btn_save_Click(object sender, EventArgs e)
-        {
-            int x;
-            connect();
-            switch (btn_save.Text)
-            {
-                case "Save":
-                    sql = "insert into student_master(student_rno,student_name,dept_name,address,mobile_no)values(@rno,@stuname,@dept,@address,@mobileno)";
-                    cmd = new SqlCommand(sql, con);
-                    cmd.Parameters.Add("@rno", SqlDbType.Int).Value = txt_rno.Text;
-                    cmd.Parameters.Add("@stuname", SqlDbType.VarChar).Value = txt_stuname.Text;
-                    cmd.Parameters.Add("@dept", SqlDbType.VarChar).Value = cmb_deptname.SelectedItem.ToString();
-                    cmd.Parameters.Add("@address", SqlDbType.VarChar).Value = txt_address.Text;
-                    cmd.Parameters.Add("@mobileno", SqlDbType.VarChar).Value = txt_mobile.Text;
-                      x = cmd.ExecuteNonQuery();
-                    if (x == 1)
-                        MessageBox.Show("Students Data Inserted");
-                    else
-                        MessageBox.Show("Students Data Not Inserted");
-                    con.Close();
-                    clear();
-                    break;
-                case "Update":
-                    sql = "update student_master set student_name=@stuname,dept_name=@dept,address=@address,mobile_no=@mobileno where student_rno=@rno";
-                    cmd = new SqlCommand(sql, con);
-                    cmd.Parameters.Add("@rno", SqlDbType.VarChar).Value = cmb_Rno.SelectedItem.ToString();
-                    cmd.Parameters.Add("@stuname", SqlDbType.VarChar).Value = txt_stuname.Text;
-                    cmd.Parameters.Add("@dept", SqlDbType.VarChar).Value = cmb_deptname.SelectedItem.ToString();
-                    cmd.Parameters.Add("@address", SqlDbType.VarChar).Value = txt_address.Text;
-                    cmd.Parameters.Add("@mobileno", SqlDbType.VarChar).Value = txt_mobile.Text;
-                    x = cmd.ExecuteNonQuery();
-                    if (x == 1)
-                        MessageBox.Show("Students Data Update");
-                    else
-                        MessageBox.Show("Students Data Not Updated");
-                    con.Close();
-                    clear();
-                    break;
-                case "Delete":
-                    sql = "delete from student_master where student_rno=@rno";
-                    cmd = new SqlCommand(sql, con);
-                    cmd.Parameters.Add("@rno", SqlDbType.VarChar).Value = cmb_Rno.SelectedItem.ToString();
-                    
-                    x = cmd.ExecuteNonQuery();
-                    if (x == 1)
-                        MessageBox.Show("Selected Student Data Deleted");
-                    else
-                        MessageBox.Show("Selected Student Data Not Deleted");
-                    con.Close();
-                    clear();
-                    LoadData();
-                    break;
+            };
 
-            }
-            BindData();
-        }
-        public void connect()
+        string[] answers = new string[]
         {
-            con.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=E:\\CBT_LabCode\\CBT_Lab_N\\Ex_9\\student_details_db.mdf;Integrated Security=True";
-            con.Open();
-        }
-        public void clear()
+               "double", "long", "decimal", "ufloat",
+               "Multiline", "Password Char", "Enable", "Text",
+               "++", "+", "New", "object",
+               "while loop", "do while loop", "foreach loop", "All the Above",
+               "global","local","external","static"
+        };
+
+        string[] quizAnswers = new string[] { "double", "Text", "New", "foreach loop", "local" };
+        string getSelectedAnswer()
         {
-            txt_rno.Clear();
-            txt_stuname.Clear();
-            txt_address.Clear();
-            txt_mobile.Clear();
-            cmb_Rno.Text = "";
-            cmb_deptname.Text = "";
+            if (rdb_A.Checked)
+                return rdb_A.Text.ToString();
+            if (rdb_B.Checked)
+                return rdb_B.Text.ToString();
+            if (rdb_C.Checked)
+                return rdb_C.Text.ToString();
+            if (rdb_D.Checked)
+                return rdb_D.Text.ToString();
+            return "";
         }
-        public void BindData()
+        public void check_answer()
         {
-            // Call connect function 
-            connect(); 
-            cmd.Connection = con;
-            cmd.CommandText = "select * from student_master ";
-            DataSet ds = new DataSet();
-            SqlDataAdapter ada = new SqlDataAdapter();
-            ada.SelectCommand = cmd;
-            ada.Fill(ds, "student_master");
-            dataGridView1.DataSource = ds;
-            dataGridView1.DataMember = "student_master";
-            con.Close();
-        }
-        public void LoadData()
-        {
-            connect();
-            cmd.Connection = con;
-            cmd.CommandText = "select * from student_master ";
-            cmb_Rno.Items.Clear();
-            //EXECUTION OF ADO
-            SqlDataReader dr = null;
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
+            if (getSelectedAnswer().Equals(quizAnswers[i]))
             {
-                cmb_Rno.Items.Add((dr.GetInt32(0)));
+                MessageBox.Show("Correct");
+                score++;
+                txt_score.Text = Convert.ToString(score);
+                btn_next_question.Enabled = false;
+                btn_next_question.Visible = false;
+                btn_start.Visible = true;
+                btn_start.Enabled = true;
+               // btn_start.Text = "Next";
             }
-            con.Close();
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            BindData();
-        }
-        private void cmb_Rno_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            connect();
-            cmd.Connection = con;
-            cmd.CommandText = "select * from student_master where student_rno = '" + cmb_Rno.SelectedItem.ToString() + "'";
-            SqlDataReader dr = null;
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
+            else
             {
-                txt_stuname.Text = dr.GetString(1);
-                cmb_deptname.Text = dr.GetString(2);
-                txt_address.Text = dr.GetString(3);
-                txt_mobile.Text = dr.GetString(4);
+                MessageBox.Show("Incorrect");
+                // score--;
+                txt_score.Text = Convert.ToString(score);
+                btn_next_question.Enabled = false;
+                btn_next_question.Visible = false;
+                btn_start.Visible = true;
+                btn_start.Enabled = true;
+              //  btn_start.Text = "Next";
             }
-            con.Close();
+        }
+        public void load_question()
+        {
+            startTime = DateTime.Now;
+            i++;
+            if (i < questions.Length)
+            {
+                //txtScore.Text = score; 
+                txt_question_no.Text = (i + 1).ToString();
+                txt_question.Text = questions[i];
+
+                rdb_A.Text = answers[a];
+                a++;
+                rdb_B.Text = answers[a];
+                a++;
+                rdb_C.Text = answers[a];
+                a++;
+                rdb_D.Text = answers[a];
+                a++;
+
+                rdb_A.Checked = false;
+                rdb_B.Checked = false;
+                rdb_C.Checked = false;
+                rdb_D.Checked = false;
+
+                btn_start.Enabled = false;
+               // btn_next_question.Visible = true;
+               // btn_next_question.Enabled = true;
+                timer1.Start();
+            }
+        }      
+        private void btn_next_question_Click(object sender, EventArgs e)
+        {
+            check_answer();
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            TimeSpan span = DateTime.Now.Subtract(startTime);
+            txt_time.Text = span.Hours.ToString() + ":" +
+            span.Minutes.ToString() + ":" + span.Seconds.ToString() + ".";
+            //& span.Milliseconds
+            //if (span.Minutes == 1)
+            if (span.Seconds == 5)
+            {
+                timer1.Stop();
+                check_answer();
+                load_question();
+            }
+        }
+        private void btn_start_Click(object sender, EventArgs e)
+        {
+            startTime = DateTime.Now;
+            load_question();
         }
     }
 }

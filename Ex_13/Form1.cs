@@ -11,14 +11,12 @@ namespace Ex_13
         {
             InitializeComponent();
         }
-
         private void rdb_select_CheckedChanged(object sender, EventArgs e)
         {
             DataSet DS = new DataSet();
-            DS.ReadXml("E:\\CBT_LabCode\\CBT_Lab_N\\Ex_13\\student_mark_details.xml");
+            DS.ReadXml("E:\\labcode_cbt\\CBT_Lab_N\\Ex_13\\student_mark_details.xml");
             dataGridView1.DataSource = DS;
             dataGridView1.DataMember = "Sem";
-
         }
     }
 }

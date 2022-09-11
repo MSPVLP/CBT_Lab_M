@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E4AB60E6-8004-4F09-94FE-C944FBE74DC2}</ProjectGuid>
+    <ProjectGuid>{1FA1144D-6062-4FBE-8414-96A3EDE372B4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ex_10</RootNamespace>
@@ -80,6 +80,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -95,12 +96,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="student_detials_db.mdf">
+    <Content Include="student_details_db.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="student_detials_db_log.ldf">
+    <Content Include="student_details_db_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>student_detials_db.mdf</DependentUpon>
+      <DependentUpon>student_details_db.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>

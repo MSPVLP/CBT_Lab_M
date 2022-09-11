@@ -51,9 +51,7 @@
                         <asp:TextBox ID="txtpassword" runat="server" 
 				TextMode="Password" Width="120px"> 
 			      </asp:TextBox>
-                    </td>
-
-
+                    </td> 
                     <td>
                         <asp:RequiredFieldValidator 
 				ID="RequiredFieldValidator4" 
@@ -65,7 +63,6 @@
                 
             </table>
                  </fieldset>
-
     </div>
         <div>
   	<fieldset style="width:600px;">
@@ -94,7 +91,6 @@
     </div>
         <asp:ScriptManager ID="ScriptManager1" runat="server">
         </asp:ScriptManager>
-
     </form>
 </body>
 </html>

@@ -10,22 +10,17 @@ namespace Ex_14
         public Form1()
         {
             InitializeComponent();
-        }
-        
+        }        
         //CONNECTION OBJECT
         SqlConnection con = new SqlConnection();
-
         // COMMAND OBJECT
         SqlCommand cmd = new SqlCommand(); 
-        DataSet ds = new DataSet();
-        
+        DataSet ds = new DataSet();        
         private void rdb_select_CheckedChanged(object sender, EventArgs e)
         {
-            openFileDialog1.ShowDialog();
-            
+            openFileDialog1.ShowDialog();            
             con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + openFileDialog1.FileName + @";Integrated Security=True;Integrated Security=True";
-            con.Open();
-           
+            con.Open();           
             cmd.Connection = con;
             cmd.CommandText = "select * from student_master ";
             SqlDataAdapter ada = new SqlDataAdapter();
@@ -33,15 +28,12 @@ namespace Ex_14
             ada.Fill(ds, "student_master");
             dataGridView1.DataSource = ds;
             dataGridView1.DataMember = "student_master";
-
         }
-
         private void btn_save_Click(object sender, EventArgs e)
         {
-            ds.WriteXml("E:\\CBT_LabCode\\CBT_Lab_N\\Ex_14\\student_details.xml", XmlWriteMode.WriteSchema);
+            ds.WriteXml("E:\\labcode_cbt\\CBT_Lab_N\\Ex_14\\student_details.xml", XmlWriteMode.WriteSchema);
             con.Close();
             MessageBox.Show("Sucessfully Written students data from database to XML...");
-
         }
     }
 }
