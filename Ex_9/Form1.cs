@@ -138,13 +138,9 @@ namespace Ex_9
             current_question++;
 
             if (current_question < questions.Length)
-            {
                 load_question(current_question);
-            }
             else
-            {
                 quiz_end("End of quiz.");
-            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -152,7 +148,7 @@ namespace Ex_9
             TimeSpan span = DateTime.Now.Subtract(start_time);
             time_remaining = MAX_QUIZ_SECONDS - span.Seconds;
 
-            txt_time.Text = time_remaining.ToString(); // span.Hours.ToString() + ":" + span.Minutes.ToString() + ":" + span.Seconds.ToString();
+            txt_time.Text = time_remaining.ToString();
 
             if (span.Seconds == MAX_QUIZ_SECONDS)
             {
