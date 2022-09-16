@@ -40,11 +40,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btn_save = new System.Windows.Forms.Button();
             this.cmb_deptname = new System.Windows.Forms.ComboBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.rdb_select = new System.Windows.Forms.RadioButton();
-            this.rdb_delete = new System.Windows.Forms.RadioButton();
-            this.rdb_Edit = new System.Windows.Forms.RadioButton();
-            this.rdb_add = new System.Windows.Forms.RadioButton();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btn_Edit = new System.Windows.Forms.Button();
@@ -54,7 +49,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.txt_id = new System.Windows.Forms.TextBox();
             this.lbl_Operation = new System.Windows.Forms.Label();
-            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -192,76 +186,6 @@
             this.cmb_deptname.Size = new System.Drawing.Size(398, 38);
             this.cmb_deptname.TabIndex = 11;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.rdb_select);
-            this.groupBox1.Controls.Add(this.rdb_delete);
-            this.groupBox1.Controls.Add(this.rdb_Edit);
-            this.groupBox1.Controls.Add(this.rdb_add);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(72, 870);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox1.Size = new System.Drawing.Size(1401, 155);
-            this.groupBox1.TabIndex = 21;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "ADO.Net Operations";
-            // 
-            // rdb_select
-            // 
-            this.rdb_select.AutoSize = true;
-            this.rdb_select.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rdb_select.Location = new System.Drawing.Point(974, 85);
-            this.rdb_select.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.rdb_select.Name = "rdb_select";
-            this.rdb_select.Size = new System.Drawing.Size(302, 40);
-            this.rdb_select.TabIndex = 24;
-            this.rdb_select.Text = "Load Students Data";
-            this.rdb_select.UseVisualStyleBackColor = true;
-            this.rdb_select.CheckedChanged += new System.EventHandler(this.rdb_select_CheckedChanged);
-            // 
-            // rdb_delete
-            // 
-            this.rdb_delete.AutoSize = true;
-            this.rdb_delete.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rdb_delete.Location = new System.Drawing.Point(532, 85);
-            this.rdb_delete.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.rdb_delete.Name = "rdb_delete";
-            this.rdb_delete.Size = new System.Drawing.Size(124, 40);
-            this.rdb_delete.TabIndex = 23;
-            this.rdb_delete.Text = "Delete";
-            this.rdb_delete.UseVisualStyleBackColor = true;
-            this.rdb_delete.CheckedChanged += new System.EventHandler(this.rdb_delete_CheckedChanged);
-            // 
-            // rdb_Edit
-            // 
-            this.rdb_Edit.AutoSize = true;
-            this.rdb_Edit.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rdb_Edit.Location = new System.Drawing.Point(294, 85);
-            this.rdb_Edit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.rdb_Edit.Name = "rdb_Edit";
-            this.rdb_Edit.Size = new System.Drawing.Size(92, 40);
-            this.rdb_Edit.TabIndex = 22;
-            this.rdb_Edit.Text = "Edit";
-            this.rdb_Edit.UseVisualStyleBackColor = true;
-            this.rdb_Edit.CheckedChanged += new System.EventHandler(this.rdb_Edit_CheckedChanged);
-            // 
-            // rdb_add
-            // 
-            this.rdb_add.AutoSize = true;
-            this.rdb_add.Checked = true;
-            this.rdb_add.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rdb_add.Location = new System.Drawing.Point(32, 85);
-            this.rdb_add.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.rdb_add.Name = "rdb_add";
-            this.rdb_add.Size = new System.Drawing.Size(95, 40);
-            this.rdb_add.TabIndex = 21;
-            this.rdb_add.TabStop = true;
-            this.rdb_add.Text = "Add";
-            this.rdb_add.UseVisualStyleBackColor = true;
-            this.rdb_add.CheckedChanged += new System.EventHandler(this.rdb_add_CheckedChanged);
-            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
@@ -273,7 +197,6 @@
             this.dataGridView1.RowHeadersWidth = 62;
             this.dataGridView1.Size = new System.Drawing.Size(782, 449);
             this.dataGridView1.TabIndex = 23;
-            this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             // 
             // openFileDialog1
             // 
@@ -360,7 +283,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1670, 1070);
+            this.ClientSize = new System.Drawing.Size(1670, 728);
             this.Controls.Add(this.lbl_Operation);
             this.Controls.Add(this.btn_Load);
             this.Controls.Add(this.btn_Add);
@@ -369,7 +292,6 @@
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.txt_id);
             this.Controls.Add(this.txt_rno);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txt_mobile);
             this.Controls.Add(this.txt_address);
             this.Controls.Add(this.txt_name);
@@ -387,8 +309,6 @@
             this.Text = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -409,11 +329,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_save;
         private System.Windows.Forms.ComboBox cmb_deptname;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton rdb_delete;
-        private System.Windows.Forms.RadioButton rdb_Edit;
-        private System.Windows.Forms.RadioButton rdb_add;
-        private System.Windows.Forms.RadioButton rdb_select;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button btn_Edit;

@@ -20,7 +20,8 @@ namespace Ex_10
         SqlDataAdapter ado_adapter = new SqlDataAdapter();
         DataSet grid_ds = new DataSet();
         SqlCommand grid_select_cmd = new SqlCommand();
-        
+        string grid_select_sql = "SELECT [id], [roll_no], [stud_name], [dept_name], [address], [mobile_no] FROM students;";
+
         SqlCommand add_cmd = new SqlCommand();
         string add_sql = "INSERT INTO students (roll_no,stud_name,dept_name,address,mobile_no) VALUES (@rno,@name,@dept,@addr,@mob)";
         SqlParameter par_add_rno = new SqlParameter("@rno", SqlDbType.Int);
@@ -29,8 +30,12 @@ namespace Ex_10
         SqlParameter par_add_addr = new SqlParameter("@addr", SqlDbType.VarChar, 150);
         SqlParameter par_add_mob = new SqlParameter("@mob", SqlDbType.VarChar, 10);
 
-        SqlCommand edit_cmd = new SqlCommand();
-        string edit_sql = "UPDATE students SET roll_no=@rno, stud_name=@stud_name,dept_name=@dept,address=@addr,mobile_no=@mob WHERE id=@id";
+        SqlCommand load_student_cmd = new SqlCommand();
+        string load_student_sql = "SELECT * FROM students WHERE id=@id";
+        SqlParameter par_load_id = new SqlParameter("@id", SqlDbType.Int);
+
+        SqlCommand insert_cmd = new SqlCommand();
+        string insert_sql = "UPDATE students SET roll_no=@rno, stud_name=@stud_name,dept_name=@dept,address=@addr,mobile_no=@mob WHERE id=@id";
         SqlParameter par_edit_id = new SqlParameter("@id", SqlDbType.Int);
         SqlParameter par_edit_rno = new SqlParameter("@rno", SqlDbType.Int);
         SqlParameter par_edit_name = new SqlParameter("@stud_name", SqlDbType.VarChar, 50);
@@ -49,11 +54,10 @@ namespace Ex_10
             db_con.Open();
 
             grid_select_cmd.Connection = db_con;
-            grid_select_cmd.CommandText = "SELECT * FROM students;";
+            grid_select_cmd.CommandText = grid_select_sql;
             ado_adapter.SelectCommand = grid_select_cmd;
             ado_adapter.Fill(grid_ds, "students");
            
-
             dataGridView1.DataSource = grid_ds;
             dataGridView1.DataMember = "students";
 
@@ -65,14 +69,18 @@ namespace Ex_10
             add_cmd.Parameters.Add(par_add_addr);
             add_cmd.Parameters.Add(par_add_mob);
 
-            edit_cmd.Connection = db_con;
-            edit_cmd.CommandText = edit_sql;
-            edit_cmd.Parameters.Add(par_edit_id);
-            edit_cmd.Parameters.Add(par_edit_rno);
-            edit_cmd.Parameters.Add(par_edit_name);
-            edit_cmd.Parameters.Add(par_edit_dept);
-            edit_cmd.Parameters.Add(par_edit_addr);
-            edit_cmd.Parameters.Add(par_edit_mob);
+            load_student_cmd.Connection = db_con;
+            load_student_cmd.CommandText = load_student_sql;
+            load_student_cmd.Parameters.Add(par_load_id);
+
+            insert_cmd.Connection = db_con;
+            insert_cmd.CommandText = insert_sql;
+            insert_cmd.Parameters.Add(par_edit_id);
+            insert_cmd.Parameters.Add(par_edit_rno);
+            insert_cmd.Parameters.Add(par_edit_name);
+            insert_cmd.Parameters.Add(par_edit_dept);
+            insert_cmd.Parameters.Add(par_edit_addr);
+            insert_cmd.Parameters.Add(par_edit_mob);
 
             delete_cmd.Connection = db_con;
             delete_cmd.CommandText = del_sql;
@@ -95,23 +103,6 @@ namespace Ex_10
             cmb_deptname.Text = "";
             lbl_Operation.Text = "";
         }
-
-        public void LoadData()
-        {
-            init_db();
-            cmd.Connection = db_con;
-            cmd.CommandText = "select * from student_master ";
-            //cmb_Rno.Items.Clear();
-            //EXECUTION OF ADO
-            SqlDataReader dr = null;
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                //cmb_Rno.Items.Add((dr.GetInt32(0)));
-            }
-            db_con.Close();
-        }
-   
 
         public void RefreshGridData()
         {
@@ -145,12 +136,25 @@ namespace Ex_10
         private void btn_Edit_Click(object sender, EventArgs e)
         {
             int id_to_edit = get_grid_selected_id();
-            
-            if (id_to_edit != 0)
+
+            if (dataGridView1.CurrentRow != null)
             {   
+
                 MessageBox.Show("Editing student ID " + id_to_edit.ToString());
                 lbl_Operation.Text = "Edit";
-                txt_id.Text = id_to_edit.ToString();
+                int id = (int) dataGridView1.CurrentRow.Cells[0].Value;
+                int rno = (int) dataGridView1.CurrentRow.Cells[1].Value;
+                string stud_name = (string)dataGridView1.CurrentRow.Cells[2].Value;
+                string dept = (string)dataGridView1.CurrentRow.Cells[3].Value;
+                string addr = (string)dataGridView1.CurrentRow.Cells[4].Value;
+                string mob = (string)dataGridView1.CurrentRow.Cells[5].Value;
+                
+                txt_id.Text = id.ToString();
+                txt_rno.Text = rno.ToString();  
+                txt_name.Text = stud_name;
+                cmb_deptname.Text = dept;
+                txt_address.Text = addr;
+                txt_mobile.Text = mob;
             }
         }
 
@@ -160,13 +164,21 @@ namespace Ex_10
             switch (lbl_Operation.Text)
             {
                 case "Add":
-                    
-                    par_add_rno.Value = txt_rno.Text;
-                    par_add_name.Value = txt_name.Text;
-                    par_add_dept.Value = cmb_deptname.SelectedItem.ToString();
-                    par_add_addr.Value = txt_address.Text;
-                    par_add_mob.Value = txt_mobile.Text;
-                    result = add_cmd.ExecuteNonQuery();
+                    if (String.IsNullOrEmpty(txt_rno.Text) | String.IsNullOrEmpty(txt_name.Text)
+                        | String.IsNullOrEmpty(txt_address.Text) | String.IsNullOrEmpty(txt_mobile.Text) | cmb_deptname.SelectedItem is null)
+                    {
+                        MessageBox.Show("Enter all details");
+                        return;
+                    }
+                    else
+                    {
+                        par_add_rno.Value = txt_rno.Text;
+                        par_add_name.Value = txt_name.Text;
+                        par_add_dept.Value = cmb_deptname.SelectedItem.ToString();
+                        par_add_addr.Value = txt_address.Text;
+                        par_add_mob.Value = txt_mobile.Text;
+                        result = add_cmd.ExecuteNonQuery();
+                    }
                     break;
 
                 case "Edit":
@@ -176,16 +188,18 @@ namespace Ex_10
                     par_edit_dept.Value = cmb_deptname.SelectedItem.ToString();
                     par_edit_addr.Value = txt_address.Text;
                     par_edit_mob.Value = txt_mobile.Text;
-                    result = edit_cmd.ExecuteNonQuery();
+                    result = insert_cmd.ExecuteNonQuery();
                     break;
             }
 
             if (result == -1)
                 MessageBox.Show("Error occured.");
             else
+            {
                 MessageBox.Show(result.ToString() + " records affected.");
-            clear();
-            RefreshGridData();
+                clear();
+                RefreshGridData();
+            }
         }
 
         private void btn_Delete_Click(object sender, EventArgs e)
@@ -202,6 +216,7 @@ namespace Ex_10
                     par_del_id.Value = id_to_del;
                     int result = delete_cmd.ExecuteNonQuery();
                     MessageBox.Show("Deleted " + result.ToString() + " record.");
+                    clear();
                 }
             }
             else MessageBox.Show("No Records selected.");
