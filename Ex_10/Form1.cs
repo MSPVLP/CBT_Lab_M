@@ -12,160 +12,205 @@ namespace Ex_10
             InitializeComponent();
         }        
         //CONNECTION OBJECT
-        SqlConnection con = new SqlConnection();
-        // COMMAND OBJECT
+        SqlConnection db_con = new SqlConnection();
+        
         SqlCommand cmd = new SqlCommand();
-        string sql;
-        private void rdb_Edit_CheckedChanged(object sender, EventArgs e)
-        {
-            cmb_Rno.Visible = true;
-            txt_rno.Visible = false;
-            btn_save.Text = "Update";
-            clear();
-            LoadData();
-        }
-        private void rdb_add_CheckedChanged(object sender, EventArgs e)
-        {
-            cmb_Rno.Visible = false;
-            txt_rno.Visible = true;
-            btn_save.Text = "Save";
-            clear(); 
-        } 
-        private void rdb_delete_CheckedChanged(object sender, EventArgs e)
-        {
-            cmb_Rno.Visible = true;
-            txt_rno.Visible = false;
-            btn_save.Text = "Delete";
-            clear();
-            LoadData();
-        }
-        private void rdb_select_CheckedChanged(object sender, EventArgs e)
-        {
-            cmb_Rno.Visible = false;
-            txt_rno.Visible = true;
-            rdb_add.Checked = false;
-            btn_save.Text = "Add";
-            BindData();
-        }
-        private void btn_save_Click(object sender, EventArgs e)
-        {
-            int x;
-            connect();
-            switch (btn_save.Text)
-            {
-                case "Save":
-                    sql = "insert into student_master(student_rno,student_name,dept_name,address,mobile_no)values(@rno,@stuname,@dept,@address,@mobileno)";
-                    cmd = new SqlCommand(sql, con);
-                    cmd.Parameters.Add("@rno", SqlDbType.Int).Value = txt_rno.Text;
-                    cmd.Parameters.Add("@stuname", SqlDbType.VarChar).Value = txt_stuname.Text;
-                    cmd.Parameters.Add("@dept", SqlDbType.VarChar).Value = cmb_deptname.SelectedItem.ToString();
-                    cmd.Parameters.Add("@address", SqlDbType.VarChar).Value = txt_address.Text;
-                    cmd.Parameters.Add("@mobileno", SqlDbType.VarChar).Value = txt_mobile.Text;
-                      x = cmd.ExecuteNonQuery();
-                    if (x == 1)
-                        MessageBox.Show("Students Data Inserted");
-                    else
-                        MessageBox.Show("Students Data Not Inserted");
-                    con.Close();
-                    clear();
-                    break;
-                case "Update":
-                    sql = "update student_master set student_name=@stuname,dept_name=@dept,address=@address,mobile_no=@mobileno where student_rno=@rno";
-                    cmd = new SqlCommand(sql, con);
-                    cmd.Parameters.Add("@rno", SqlDbType.VarChar).Value = cmb_Rno.SelectedItem.ToString();
-                    cmd.Parameters.Add("@stuname", SqlDbType.VarChar).Value = txt_stuname.Text;
-                    cmd.Parameters.Add("@dept", SqlDbType.VarChar).Value = cmb_deptname.SelectedItem.ToString();
-                    cmd.Parameters.Add("@address", SqlDbType.VarChar).Value = txt_address.Text;
-                    cmd.Parameters.Add("@mobileno", SqlDbType.VarChar).Value = txt_mobile.Text;
-                    x = cmd.ExecuteNonQuery();
-                    if (x == 1)
-                        MessageBox.Show("Students Data Update");
-                    else
-                        MessageBox.Show("Students Data Not Updated");
-                    con.Close();
-                    clear();
-                    break;
-                case "Delete":
-                    sql = "delete from student_master where student_rno=@rno";
-                    cmd = new SqlCommand(sql, con);
-                    cmd.Parameters.Add("@rno", SqlDbType.VarChar).Value = cmb_Rno.SelectedItem.ToString();
-                    
-                    x = cmd.ExecuteNonQuery();
-                    if (x == 1)
-                        MessageBox.Show("Selected Student Data Deleted");
-                    else
-                        MessageBox.Show("Selected Student Data Not Deleted");
-                    con.Close();
-                    clear();
-                    LoadData();
-                    break;
+        
 
-            }
-            BindData();
-        }
-        public void connect()
+        SqlDataAdapter ado_adapter = new SqlDataAdapter();
+        DataSet grid_ds = new DataSet();
+        SqlCommand grid_select_cmd = new SqlCommand();
+        
+        SqlCommand add_cmd = new SqlCommand();
+        string add_sql = "INSERT INTO students (roll_no,stud_name,dept_name,address,mobile_no) VALUES (@rno,@name,@dept,@addr,@mob)";
+        SqlParameter par_add_rno = new SqlParameter("@rno", SqlDbType.Int);
+        SqlParameter par_add_name = new SqlParameter("@name", SqlDbType.VarChar, 50);
+        SqlParameter par_add_dept = new SqlParameter("@dept", SqlDbType.VarChar, 50);
+        SqlParameter par_add_addr = new SqlParameter("@addr", SqlDbType.VarChar, 150);
+        SqlParameter par_add_mob = new SqlParameter("@mob", SqlDbType.VarChar, 10);
+
+        SqlCommand edit_cmd = new SqlCommand();
+        string edit_sql = "UPDATE students SET roll_no=@rno, stud_name=@stud_name,dept_name=@dept,address=@addr,mobile_no=@mob WHERE id=@id";
+        SqlParameter par_edit_id = new SqlParameter("@id", SqlDbType.Int);
+        SqlParameter par_edit_rno = new SqlParameter("@rno", SqlDbType.Int);
+        SqlParameter par_edit_name = new SqlParameter("@stud_name", SqlDbType.VarChar, 50);
+        SqlParameter par_edit_dept = new SqlParameter("@dept", SqlDbType.VarChar, 50);
+        SqlParameter par_edit_addr = new SqlParameter("@addr", SqlDbType.VarChar, 150);
+        SqlParameter par_edit_mob = new SqlParameter("@mob", SqlDbType.VarChar, 10);
+
+        SqlCommand delete_cmd = new SqlCommand();
+        string del_sql = "DELETE FROM students WHERE id=@id;";
+        SqlParameter par_del_id = new SqlParameter("@id", SqlDbType.Int);
+
+        public void init_db()
         {
             openFileDialog1.ShowDialog();
-            con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + openFileDialog1.FileName + @";Integrated Security=True;Integrated Security=True";
-            con.Open();
+            db_con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + openFileDialog1.FileName + @";Integrated Security=True;Integrated Security=True";
+            db_con.Open();
+
+            grid_select_cmd.Connection = db_con;
+            grid_select_cmd.CommandText = "SELECT * FROM students;";
+            ado_adapter.SelectCommand = grid_select_cmd;
+            ado_adapter.Fill(grid_ds, "students");
+           
+
+            dataGridView1.DataSource = grid_ds;
+            dataGridView1.DataMember = "students";
+
+            add_cmd.Connection = db_con;
+            add_cmd.CommandText = add_sql;
+            add_cmd.Parameters.Add(par_add_rno);
+            add_cmd.Parameters.Add(par_add_name);
+            add_cmd.Parameters.Add(par_add_dept);
+            add_cmd.Parameters.Add(par_add_addr);
+            add_cmd.Parameters.Add(par_add_mob);
+
+            edit_cmd.Connection = db_con;
+            edit_cmd.CommandText = edit_sql;
+            edit_cmd.Parameters.Add(par_edit_id);
+            edit_cmd.Parameters.Add(par_edit_rno);
+            edit_cmd.Parameters.Add(par_edit_name);
+            edit_cmd.Parameters.Add(par_edit_dept);
+            edit_cmd.Parameters.Add(par_edit_addr);
+            edit_cmd.Parameters.Add(par_edit_mob);
+
+            delete_cmd.Connection = db_con;
+            delete_cmd.CommandText = del_sql;
+            //ado_adapter.DeleteCommand = delete_cmd;
+            delete_cmd.Parameters.Add(par_del_id);
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            init_db();
+        }
+
         public void clear()
         {
+            txt_id.Clear();
             txt_rno.Clear();
-            txt_stuname.Clear();
+            txt_name.Clear();
             txt_address.Clear();
             txt_mobile.Clear();
-            cmb_Rno.Text = "";
             cmb_deptname.Text = "";
+            lbl_Operation.Text = "";
         }
-        public void BindData()
-        {
-            // Call connect function 
-            connect(); 
-            cmd.Connection = con;
-            cmd.CommandText = "select * from student_master ";
-            DataSet ds = new DataSet();
-            SqlDataAdapter ada = new SqlDataAdapter();
-            ada.SelectCommand = cmd;
-            ada.Fill(ds, "student_master");
-            dataGridView1.DataSource = ds;
-            dataGridView1.DataMember = "student_master";
-            con.Close();
-        }
+
         public void LoadData()
         {
-            connect();
-            cmd.Connection = con;
+            init_db();
+            cmd.Connection = db_con;
             cmd.CommandText = "select * from student_master ";
-            cmb_Rno.Items.Clear();
+            //cmb_Rno.Items.Clear();
             //EXECUTION OF ADO
             SqlDataReader dr = null;
             dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-                cmb_Rno.Items.Add((dr.GetInt32(0)));
+                //cmb_Rno.Items.Add((dr.GetInt32(0)));
             }
-            con.Close();
+            db_con.Close();
         }
-        private void Form1_Load(object sender, EventArgs e)
+   
+
+        public void RefreshGridData()
         {
-            BindData();
+            grid_ds.Clear();
+            ado_adapter.Fill(grid_ds, "students");
         }
-        private void cmb_Rno_SelectedIndexChanged(object sender, EventArgs e)
+
+        private int get_grid_selected_id()
         {
-            connect();
-            cmd.Connection = con;
-            cmd.CommandText = "select * from student_master where student_rno = '" + cmb_Rno.SelectedItem.ToString() + "'";
-            SqlDataReader dr = null;
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
+            // Check if a row is selected in the grid. 
+            if (dataGridView1.CurrentRow != null)
+            {   // Load ID from row selected in dataGridView1
+                return (int)dataGridView1.CurrentRow.Cells[0].Value;
+
+            }
+            else
+                return 0;
+        }
+
+        private void btn_Load_Click(object sender, EventArgs e)
+        {
+            RefreshGridData();
+        }
+
+        private void btn_Add_Click(object sender, EventArgs e)
+        {
+            clear();
+            lbl_Operation.Text = "Add";
+        }
+
+        private void btn_Edit_Click(object sender, EventArgs e)
+        {
+            int id_to_edit = get_grid_selected_id();
+            
+            if (id_to_edit != 0)
+            {   
+                MessageBox.Show("Editing student ID " + id_to_edit.ToString());
+                lbl_Operation.Text = "Edit";
+                txt_id.Text = id_to_edit.ToString();
+            }
+        }
+
+        private void btn_save_Click(object sender, EventArgs e)
+        {
+            int result = 0;
+            switch (lbl_Operation.Text)
             {
-                txt_stuname.Text = dr.GetString(1);
-                cmb_deptname.Text = dr.GetString(2);
-                txt_address.Text = dr.GetString(3);
-                txt_mobile.Text = dr.GetString(4);
+                case "Add":
+                    
+                    par_add_rno.Value = txt_rno.Text;
+                    par_add_name.Value = txt_name.Text;
+                    par_add_dept.Value = cmb_deptname.SelectedItem.ToString();
+                    par_add_addr.Value = txt_address.Text;
+                    par_add_mob.Value = txt_mobile.Text;
+                    result = add_cmd.ExecuteNonQuery();
+                    break;
+
+                case "Edit":
+                    par_edit_id.Value = txt_id.Text;
+                    par_edit_rno.Value = txt_rno.Text;
+                    par_edit_name.Value = txt_name.Text;
+                    par_edit_dept.Value = cmb_deptname.SelectedItem.ToString();
+                    par_edit_addr.Value = txt_address.Text;
+                    par_edit_mob.Value = txt_mobile.Text;
+                    result = edit_cmd.ExecuteNonQuery();
+                    break;
             }
-            con.Close();
+
+            if (result == -1)
+                MessageBox.Show("Error occured.");
+            else
+                MessageBox.Show(result.ToString() + " records affected.");
+            clear();
+            RefreshGridData();
         }
+
+        private void btn_Delete_Click(object sender, EventArgs e)
+        {
+            int id_to_del = get_grid_selected_id();
+
+            if (id_to_del != 0)
+            {   
+                // Confirm with user if he wants to delete
+                string message = "Are you sure you want to delete student ID " + id_to_del.ToString() + " ?";
+                DialogResult choice = MessageBox.Show(message, "Delete", MessageBoxButtons.YesNo);
+                if (choice == DialogResult.Yes)
+                {
+                    par_del_id.Value = id_to_del;
+                    int result = delete_cmd.ExecuteNonQuery();
+                    MessageBox.Show("Deleted " + result.ToString() + " record.");
+                }
+            }
+            else MessageBox.Show("No Records selected.");
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            db_con.Close();
+        }
+
     }
 }

@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[students] (
+	[id] INT IDENTITY(1,1) PRIMARY KEY,
+    [roll_no]  INT           NOT NULL,
+    [stud_name] VARCHAR (50)  NULL,
+    [dept_name]    VARCHAR (50)  NULL,
+    [address]      VARCHAR (MAX) NULL,
+    [mobile_no]    VARCHAR (10)  NULL,
+);
