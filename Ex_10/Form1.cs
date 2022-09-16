@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Ex_10
@@ -47,6 +48,10 @@ namespace Ex_10
         string del_sql = "DELETE FROM students WHERE id=@id;";
         SqlParameter par_del_id = new SqlParameter("@id", SqlDbType.Int);
 
+        /*
+         * User Defined Function init_db() :   
+         * Initialises database connection string db_con and other sql objects
+         */
         public void init_db()
         {
             openFileDialog1.ShowDialog();
@@ -57,7 +62,6 @@ namespace Ex_10
             grid_select_cmd.CommandText = grid_select_sql;
             ado_adapter.SelectCommand = grid_select_cmd;
             ado_adapter.Fill(grid_ds, "students");
-           
             dataGridView1.DataSource = grid_ds;
             dataGridView1.DataMember = "students";
 
@@ -68,10 +72,6 @@ namespace Ex_10
             add_cmd.Parameters.Add(par_add_dept);
             add_cmd.Parameters.Add(par_add_addr);
             add_cmd.Parameters.Add(par_add_mob);
-
-            load_student_cmd.Connection = db_con;
-            load_student_cmd.CommandText = load_student_sql;
-            load_student_cmd.Parameters.Add(par_load_id);
 
             insert_cmd.Connection = db_con;
             insert_cmd.CommandText = insert_sql;
@@ -84,93 +84,76 @@ namespace Ex_10
 
             delete_cmd.Connection = db_con;
             delete_cmd.CommandText = del_sql;
-            //ado_adapter.DeleteCommand = delete_cmd;
             delete_cmd.Parameters.Add(par_del_id);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            init_db();
-        }
-
-        public void clear()
-        {
-            txt_id.Clear();
-            txt_rno.Clear();
-            txt_name.Clear();
-            txt_address.Clear();
-            txt_mobile.Clear();
-            cmb_deptname.Text = "";
-            lbl_Operation.Text = "";
-        }
-
+        /* User defined function RefreshGridData():
+         *  Clears datagridview1's old data and fills with new data
+         */
         public void RefreshGridData()
         {
             grid_ds.Clear();
             ado_adapter.Fill(grid_ds, "students");
         }
 
-        private int get_grid_selected_id()
+        private void Form1_Load(object sender, EventArgs e)
         {
-            // Check if a row is selected in the grid. 
-            if (dataGridView1.CurrentRow != null)
-            {   // Load ID from row selected in dataGridView1
-                return (int)dataGridView1.CurrentRow.Cells[0].Value;
-
-            }
-            else
-                return 0;
-        }
-
-        private void btn_Load_Click(object sender, EventArgs e)
-        {
+            init_db();
+            groupBox_Inputs.Visible = false;
             RefreshGridData();
         }
 
         private void btn_Add_Click(object sender, EventArgs e)
         {
-            clear();
+            txt_id.Clear();
+            txt_rno.Clear();
+            txt_name.Clear();
+            txt_address.Clear();
+            txt_mobile.Clear();
+            cmb_deptname.SelectedItem = null;
+            lbl_Operation.Text = "";
             lbl_Operation.Text = "Add";
+            groupBox_Inputs.Visible = true;
         }
 
         private void btn_Edit_Click(object sender, EventArgs e)
         {
-            int id_to_edit = get_grid_selected_id();
-
             if (dataGridView1.CurrentRow != null)
             {   
-
-                MessageBox.Show("Editing student ID " + id_to_edit.ToString());
                 lbl_Operation.Text = "Edit";
-                int id = (int) dataGridView1.CurrentRow.Cells[0].Value;
-                int rno = (int) dataGridView1.CurrentRow.Cells[1].Value;
-                string stud_name = (string)dataGridView1.CurrentRow.Cells[2].Value;
-                string dept = (string)dataGridView1.CurrentRow.Cells[3].Value;
-                string addr = (string)dataGridView1.CurrentRow.Cells[4].Value;
-                string mob = (string)dataGridView1.CurrentRow.Cells[5].Value;
-                
+                int id = (int)dataGridView1.CurrentRow.Cells[0].Value;
+                int rno = (int)dataGridView1.CurrentRow.Cells[1].Value;
                 txt_id.Text = id.ToString();
                 txt_rno.Text = rno.ToString();  
-                txt_name.Text = stud_name;
-                cmb_deptname.Text = dept;
-                txt_address.Text = addr;
-                txt_mobile.Text = mob;
+                txt_name.Text = (string)dataGridView1.CurrentRow.Cells[2].Value; 
+                cmb_deptname.Text = (string)dataGridView1.CurrentRow.Cells[3].Value; 
+                txt_address.Text = (string)dataGridView1.CurrentRow.Cells[4].Value;
+                txt_mobile.Text = (string)dataGridView1.CurrentRow.Cells[5].Value;
+
+                groupBox_Inputs.Visible = true;
             }
         }
 
+
         private void btn_save_Click(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(txt_rno.Text) | String.IsNullOrEmpty(txt_name.Text)
+                        | String.IsNullOrEmpty(txt_address.Text) | String.IsNullOrEmpty(txt_mobile.Text) | cmb_deptname.SelectedItem is null)
+            {
+                MessageBox.Show("Enter all details.");
+                return;
+            }
+            else if (!txt_rno.Text.All(char.IsDigit))
+            {
+                MessageBox.Show("Enter only numbers for Roll No.");
+                return;
+            }
+
             int result = 0;
+
             switch (lbl_Operation.Text)
             {
                 case "Add":
-                    if (String.IsNullOrEmpty(txt_rno.Text) | String.IsNullOrEmpty(txt_name.Text)
-                        | String.IsNullOrEmpty(txt_address.Text) | String.IsNullOrEmpty(txt_mobile.Text) | cmb_deptname.SelectedItem is null)
-                    {
-                        MessageBox.Show("Enter all details");
-                        return;
-                    }
-                    else
                     {
                         par_add_rno.Value = txt_rno.Text;
                         par_add_name.Value = txt_name.Text;
@@ -197,29 +180,33 @@ namespace Ex_10
             else
             {
                 MessageBox.Show(result.ToString() + " records affected.");
-                clear();
+                groupBox_Inputs.Visible = false;
                 RefreshGridData();
             }
         }
 
         private void btn_Delete_Click(object sender, EventArgs e)
         {
-            int id_to_del = get_grid_selected_id();
+            int id_to_del = 0;
 
-            if (id_to_del != 0)
-            {   
-                // Confirm with user if he wants to delete
-                string message = "Are you sure you want to delete student ID " + id_to_del.ToString() + " ?";
-                DialogResult choice = MessageBox.Show(message, "Delete", MessageBoxButtons.YesNo);
-                if (choice == DialogResult.Yes)
-                {
-                    par_del_id.Value = id_to_del;
-                    int result = delete_cmd.ExecuteNonQuery();
-                    MessageBox.Show("Deleted " + result.ToString() + " record.");
-                    clear();
-                }
+            if (dataGridView1.CurrentRow != null)               // Check if a row is selected in the grid. 
+                id_to_del = (int)dataGridView1.CurrentRow.Cells[0].Value; // Load ID from selected row
+            else
+            {
+                MessageBox.Show("No Records selected.");
+                return;
             }
-            else MessageBox.Show("No Records selected.");
+            // Confirm with user if he wants to delete
+            string message = "Are you sure you want to delete student ID " + id_to_del.ToString() + " ?";
+            DialogResult choice = MessageBox.Show(message, "Delete", MessageBoxButtons.YesNo);
+            if (choice == DialogResult.Yes)
+            {
+                par_del_id.Value = id_to_del;
+                int result = delete_cmd.ExecuteNonQuery();
+                MessageBox.Show("Deleted " + result.ToString() + " record.");
+                groupBox_Inputs.Visible = false;
+                RefreshGridData();
+            }
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
