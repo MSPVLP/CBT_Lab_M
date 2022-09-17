@@ -1,0 +1,12 @@
+﻿txt_address.Multiline = true;
+dataGridView1.AllowUserToAddRows = false;
+dataGridView1.EditMode = EditProgrammatically;
+cmb_deptname.DropDownStyle = DropDownList;
+cmb_deptname.Items:
+            "Information Technology"
+            "Computer Engineering",
+            "Electronics and Communication Engineering",
+            "Electrical and Electronics Engineering",
+            "Mechanical Engineering",
+            "Automobile Engineering",
+            "Civil Engineering"
