@@ -28,11 +28,12 @@ namespace Ex_10
         // User defined function init_db() : Initialises database connection string db_con and other sql objects
         public void init_db_connection()
         {
+            // Database connection objects
             db_con = new SqlConnection();
             db_con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + Application.StartupPath + @"\student_details_db.mdf" + @";Integrated Security=True;Integrated Security=True";
-
             db_con.Open();
 
+            // DataGridView control - Command, DataAdapter and DataSet objects
             grid_select_cmd = new SqlCommand();
             grid_select_cmd.Connection = db_con;
             grid_select_cmd.CommandText = "SELECT [id], [roll_no], [stud_name], [dept_name], [address], [mobile_no] FROM students;";
@@ -43,9 +44,10 @@ namespace Ex_10
             grid_ds = new DataSet();
             ado_adapter.Fill(grid_ds, "students");
             
-            dataGridView1.DataSource = grid_ds;
+            dataGridView1.DataSource = grid_ds;     // Bind Dataset to grid
             dataGridView1.DataMember = "students";
             
+            // Objects for Add record
             insertcmd = new SqlCommand();
             insertcmd.Connection = db_con;
             insertcmd.CommandText = "INSERT INTO students (roll_no,stud_name,dept_name,address,mobile_no) VALUES (@rno,@name,@dept,@addr,@mob)";
@@ -60,6 +62,7 @@ namespace Ex_10
             insertcmd.Parameters.Add(par_insert_addr);
             insertcmd.Parameters.Add(par_insert_mob);
 
+            // Objects for Edit record
             update_cmd = new SqlCommand();
             update_cmd.Connection = db_con;
             update_cmd.CommandText = "UPDATE students SET roll_no=@rno, stud_name=@stud_name,dept_name=@dept,address=@addr,mobile_no=@mob WHERE id=@id";
@@ -76,6 +79,7 @@ namespace Ex_10
             update_cmd.Parameters.Add(par_update_addr);
             update_cmd.Parameters.Add(par_update_mob);
 
+            // Objects for Delete record
             delete_cmd = new SqlCommand();
             delete_cmd.Connection = db_con;
             delete_cmd.CommandText = "DELETE FROM students WHERE id=@id;";
@@ -89,6 +93,8 @@ namespace Ex_10
             grid_ds.Clear();
             ado_adapter.Fill(grid_ds, "students");
         }
+        
+        // ---- Form Event handling functions ----
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -114,7 +120,8 @@ namespace Ex_10
         {
             if (dataGridView1.CurrentRow != null)
             {   
-                lbl_Operation.Text = "Edit";
+                // Load data from datagrid's row to input fields
+                // Type of Cells[].Value is object. so we cast them to int or string
                 int id = (int)dataGridView1.CurrentRow.Cells[0].Value;
                 int rno = (int)dataGridView1.CurrentRow.Cells[1].Value;
                 txt_id.Text = id.ToString();
@@ -124,9 +131,10 @@ namespace Ex_10
                 txt_address.Text = (string)dataGridView1.CurrentRow.Cells[4].Value;
                 txt_mobile.Text = (string)dataGridView1.CurrentRow.Cells[5].Value;
 
+                lbl_Operation.Text = "Edit";
                 groupBox_Inputs.Visible = true;
             }
-            else MessageBox.Show("No Records selected.");
+            else MessageBox.Show("No Records selected.", "Edit");
         }
 
         private void btn_save_Click(object sender, EventArgs e)
@@ -134,12 +142,12 @@ namespace Ex_10
             if (String.IsNullOrEmpty(txt_rno.Text) | String.IsNullOrEmpty(txt_name.Text)
                         | String.IsNullOrEmpty(txt_address.Text) | String.IsNullOrEmpty(txt_mobile.Text) | cmb_deptname.SelectedItem is null)
             {
-                MessageBox.Show("Enter all details.");
+                MessageBox.Show("Enter all details.", "Save");
                 return;
             }
             else if (!txt_rno.Text.All(char.IsDigit))
             {
-                MessageBox.Show("Enter only numbers for Roll No.");
+                MessageBox.Show("Enter only numbers for Roll No.", "Save");
                 return;
             }
 
@@ -173,7 +181,7 @@ namespace Ex_10
                 MessageBox.Show("Error occured.");
             else
             {
-                MessageBox.Show(result.ToString() + " records affected.");
+                MessageBox.Show(result.ToString() + " records affected.", "Save");
                 groupBox_Inputs.Visible = false;
                 RefreshGridData();
             }
@@ -181,13 +189,13 @@ namespace Ex_10
 
         private void btn_delete_Click(object sender, EventArgs e)
         {
-            int id_to_del = 0;
+            int id_to_del;
 
             if (dataGridView1.CurrentRow != null)               // Check if a row is selected in the grid. 
                 id_to_del = (int)dataGridView1.CurrentRow.Cells[0].Value; // Load ID from selected row
             else
             {
-                MessageBox.Show("No Records selected.");
+                MessageBox.Show("No Records selected.","Delete");
                 return;
             }
             // Confirm with user if he wants to delete
@@ -197,7 +205,7 @@ namespace Ex_10
             {
                 par_del_id.Value = id_to_del;
                 int result = delete_cmd.ExecuteNonQuery();
-                MessageBox.Show("Deleted " + result.ToString() + " record.");
+                MessageBox.Show("Deleted " + result.ToString() + " record.", "Delete");
                 groupBox_Inputs.Visible = false;
                 RefreshGridData();
             }
@@ -205,7 +213,7 @@ namespace Ex_10
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            db_con.Close();
+            db_con.Close(); // Close DB connection while form is closed
         }
     }
 }
