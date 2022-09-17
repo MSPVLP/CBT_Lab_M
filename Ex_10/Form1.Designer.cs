@@ -41,10 +41,9 @@
             this.btn_save = new System.Windows.Forms.Button();
             this.cmb_deptname = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.btn_Edit = new System.Windows.Forms.Button();
-            this.btn_Delete = new System.Windows.Forms.Button();
-            this.btn_Add = new System.Windows.Forms.Button();
+            this.btn_edit = new System.Windows.Forms.Button();
+            this.btn_delete = new System.Windows.Forms.Button();
+            this.btn_add = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.txt_id = new System.Windows.Forms.TextBox();
             this.lbl_Operation = new System.Windows.Forms.Label();
@@ -200,42 +199,38 @@
             this.dataGridView1.Size = new System.Drawing.Size(782, 449);
             this.dataGridView1.TabIndex = 23;
             // 
-            // openFileDialog1
+            // btn_edit
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.btn_edit.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.btn_edit.Location = new System.Drawing.Point(469, 618);
+            this.btn_edit.Name = "btn_edit";
+            this.btn_edit.Size = new System.Drawing.Size(172, 53);
+            this.btn_edit.TabIndex = 25;
+            this.btn_edit.Text = "Edit";
+            this.btn_edit.UseVisualStyleBackColor = true;
+            this.btn_edit.Click += new System.EventHandler(this.btn_edit_Click);
             // 
-            // btn_Edit
+            // btn_delete
             // 
-            this.btn_Edit.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.btn_Edit.Location = new System.Drawing.Point(469, 618);
-            this.btn_Edit.Name = "btn_Edit";
-            this.btn_Edit.Size = new System.Drawing.Size(172, 53);
-            this.btn_Edit.TabIndex = 25;
-            this.btn_Edit.Text = "Edit";
-            this.btn_Edit.UseVisualStyleBackColor = true;
-            this.btn_Edit.Click += new System.EventHandler(this.btn_Edit_Click);
+            this.btn_delete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.btn_delete.Location = new System.Drawing.Point(662, 617);
+            this.btn_delete.Name = "btn_delete";
+            this.btn_delete.Size = new System.Drawing.Size(160, 54);
+            this.btn_delete.TabIndex = 26;
+            this.btn_delete.Text = "Delete";
+            this.btn_delete.UseVisualStyleBackColor = true;
+            this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
             // 
-            // btn_Delete
+            // btn_add
             // 
-            this.btn_Delete.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.btn_Delete.Location = new System.Drawing.Point(662, 617);
-            this.btn_Delete.Name = "btn_Delete";
-            this.btn_Delete.Size = new System.Drawing.Size(160, 54);
-            this.btn_Delete.TabIndex = 26;
-            this.btn_Delete.Text = "Delete";
-            this.btn_Delete.UseVisualStyleBackColor = true;
-            this.btn_Delete.Click += new System.EventHandler(this.btn_Delete_Click);
-            // 
-            // btn_Add
-            // 
-            this.btn_Add.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.btn_Add.Location = new System.Drawing.Point(306, 618);
-            this.btn_Add.Name = "btn_Add";
-            this.btn_Add.Size = new System.Drawing.Size(131, 54);
-            this.btn_Add.TabIndex = 27;
-            this.btn_Add.Text = "Add";
-            this.btn_Add.UseVisualStyleBackColor = true;
-            this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
+            this.btn_add.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.btn_add.Location = new System.Drawing.Point(306, 618);
+            this.btn_add.Name = "btn_add";
+            this.btn_add.Size = new System.Drawing.Size(131, 54);
+            this.btn_add.TabIndex = 27;
+            this.btn_add.Text = "Add";
+            this.btn_add.UseVisualStyleBackColor = true;
+            this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
             // 
             // label7
             // 
@@ -299,9 +294,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1670, 728);
             this.Controls.Add(this.groupBox_Inputs);
-            this.Controls.Add(this.btn_Add);
-            this.Controls.Add(this.btn_Delete);
-            this.Controls.Add(this.btn_Edit);
+            this.Controls.Add(this.btn_add);
+            this.Controls.Add(this.btn_delete);
+            this.Controls.Add(this.btn_edit);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label2);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -331,10 +326,9 @@
         private System.Windows.Forms.Button btn_save;
         private System.Windows.Forms.ComboBox cmb_deptname;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Button btn_Edit;
-        private System.Windows.Forms.Button btn_Delete;
-        private System.Windows.Forms.Button btn_Add;
+        private System.Windows.Forms.Button btn_edit;
+        private System.Windows.Forms.Button btn_delete;
+        private System.Windows.Forms.Button btn_add;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txt_id;
         private System.Windows.Forms.Label lbl_Operation;

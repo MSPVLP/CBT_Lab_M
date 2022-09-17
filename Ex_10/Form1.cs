@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Configuration;
 using System.Windows.Forms;
 
 namespace Ex_10
@@ -12,84 +13,77 @@ namespace Ex_10
         {
             InitializeComponent();
         }        
-        //CONNECTION OBJECT
-        SqlConnection db_con = new SqlConnection();
         
-        SqlCommand cmd = new SqlCommand();
-        
+        // Declare variables required for ADO.NET 
+        SqlConnection db_con;
+        SqlDataAdapter ado_adapter;
+        DataSet grid_ds;
 
-        SqlDataAdapter ado_adapter = new SqlDataAdapter();
-        DataSet grid_ds = new DataSet();
-        SqlCommand grid_select_cmd = new SqlCommand();
-        string grid_select_sql = "SELECT [id], [roll_no], [stud_name], [dept_name], [address], [mobile_no] FROM students;";
+        SqlCommand grid_select_cmd, insertcmd, update_cmd, delete_cmd;
 
-        SqlCommand add_cmd = new SqlCommand();
-        string add_sql = "INSERT INTO students (roll_no,stud_name,dept_name,address,mobile_no) VALUES (@rno,@name,@dept,@addr,@mob)";
-        SqlParameter par_add_rno = new SqlParameter("@rno", SqlDbType.Int);
-        SqlParameter par_add_name = new SqlParameter("@name", SqlDbType.VarChar, 50);
-        SqlParameter par_add_dept = new SqlParameter("@dept", SqlDbType.VarChar, 50);
-        SqlParameter par_add_addr = new SqlParameter("@addr", SqlDbType.VarChar, 150);
-        SqlParameter par_add_mob = new SqlParameter("@mob", SqlDbType.VarChar, 10);
+        SqlParameter par_insert_rno, par_insert_name, par_insert_dept, par_insert_addr, par_insert_mob;
+        SqlParameter par_update_id, par_update_rno, par_update_name, par_update_dept, par_update_addr, par_update_mob;
+        SqlParameter par_del_id;
 
-        SqlCommand load_student_cmd = new SqlCommand();
-        string load_student_sql = "SELECT * FROM students WHERE id=@id";
-        SqlParameter par_load_id = new SqlParameter("@id", SqlDbType.Int);
-
-        SqlCommand insert_cmd = new SqlCommand();
-        string insert_sql = "UPDATE students SET roll_no=@rno, stud_name=@stud_name,dept_name=@dept,address=@addr,mobile_no=@mob WHERE id=@id";
-        SqlParameter par_edit_id = new SqlParameter("@id", SqlDbType.Int);
-        SqlParameter par_edit_rno = new SqlParameter("@rno", SqlDbType.Int);
-        SqlParameter par_edit_name = new SqlParameter("@stud_name", SqlDbType.VarChar, 50);
-        SqlParameter par_edit_dept = new SqlParameter("@dept", SqlDbType.VarChar, 50);
-        SqlParameter par_edit_addr = new SqlParameter("@addr", SqlDbType.VarChar, 150);
-        SqlParameter par_edit_mob = new SqlParameter("@mob", SqlDbType.VarChar, 10);
-
-        SqlCommand delete_cmd = new SqlCommand();
-        string del_sql = "DELETE FROM students WHERE id=@id;";
-        SqlParameter par_del_id = new SqlParameter("@id", SqlDbType.Int);
-
-        /*
-         * User Defined Function init_db() :   
-         * Initialises database connection string db_con and other sql objects
-         */
-        public void init_db()
+        // User defined function init_db() : Initialises database connection string db_con and other sql objects
+        public void init_db_connection()
         {
-            openFileDialog1.ShowDialog();
-            db_con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + openFileDialog1.FileName + @";Integrated Security=True;Integrated Security=True";
+            db_con = new SqlConnection();
+            db_con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + Application.StartupPath + @"\student_details_db.mdf" + @";Integrated Security=True;Integrated Security=True";
+
             db_con.Open();
 
+            grid_select_cmd = new SqlCommand();
             grid_select_cmd.Connection = db_con;
-            grid_select_cmd.CommandText = grid_select_sql;
+            grid_select_cmd.CommandText = "SELECT [id], [roll_no], [stud_name], [dept_name], [address], [mobile_no] FROM students;";
+           
+            ado_adapter = new SqlDataAdapter();
             ado_adapter.SelectCommand = grid_select_cmd;
+            
+            grid_ds = new DataSet();
             ado_adapter.Fill(grid_ds, "students");
+            
             dataGridView1.DataSource = grid_ds;
             dataGridView1.DataMember = "students";
+            
+            insertcmd = new SqlCommand();
+            insertcmd.Connection = db_con;
+            insertcmd.CommandText = "INSERT INTO students (roll_no,stud_name,dept_name,address,mobile_no) VALUES (@rno,@name,@dept,@addr,@mob)";
+            par_insert_rno = new SqlParameter("@rno", SqlDbType.Int);
+            par_insert_name = new SqlParameter("@name", SqlDbType.VarChar, 50);
+            par_insert_dept = new SqlParameter("@dept", SqlDbType.VarChar, 50);
+            par_insert_addr = new SqlParameter("@addr", SqlDbType.VarChar, 150);
+            par_insert_mob = new SqlParameter("@mob", SqlDbType.VarChar, 10);
+            insertcmd.Parameters.Add(par_insert_rno);
+            insertcmd.Parameters.Add(par_insert_name);
+            insertcmd.Parameters.Add(par_insert_dept);
+            insertcmd.Parameters.Add(par_insert_addr);
+            insertcmd.Parameters.Add(par_insert_mob);
 
-            add_cmd.Connection = db_con;
-            add_cmd.CommandText = add_sql;
-            add_cmd.Parameters.Add(par_add_rno);
-            add_cmd.Parameters.Add(par_add_name);
-            add_cmd.Parameters.Add(par_add_dept);
-            add_cmd.Parameters.Add(par_add_addr);
-            add_cmd.Parameters.Add(par_add_mob);
+            update_cmd = new SqlCommand();
+            update_cmd.Connection = db_con;
+            update_cmd.CommandText = "UPDATE students SET roll_no=@rno, stud_name=@stud_name,dept_name=@dept,address=@addr,mobile_no=@mob WHERE id=@id";
+            par_update_id = new SqlParameter("@id", SqlDbType.Int);
+            par_update_rno = new SqlParameter("@rno", SqlDbType.Int);
+            par_update_name = new SqlParameter("@stud_name", SqlDbType.VarChar, 50);
+            par_update_dept = new SqlParameter("@dept", SqlDbType.VarChar, 50);
+            par_update_addr = new SqlParameter("@addr", SqlDbType.VarChar, 150);
+            par_update_mob = new SqlParameter("@mob", SqlDbType.VarChar, 10);
+            update_cmd.Parameters.Add(par_update_id);
+            update_cmd.Parameters.Add(par_update_rno);
+            update_cmd.Parameters.Add(par_update_name);
+            update_cmd.Parameters.Add(par_update_dept);
+            update_cmd.Parameters.Add(par_update_addr);
+            update_cmd.Parameters.Add(par_update_mob);
 
-            insert_cmd.Connection = db_con;
-            insert_cmd.CommandText = insert_sql;
-            insert_cmd.Parameters.Add(par_edit_id);
-            insert_cmd.Parameters.Add(par_edit_rno);
-            insert_cmd.Parameters.Add(par_edit_name);
-            insert_cmd.Parameters.Add(par_edit_dept);
-            insert_cmd.Parameters.Add(par_edit_addr);
-            insert_cmd.Parameters.Add(par_edit_mob);
-
+            delete_cmd = new SqlCommand();
             delete_cmd.Connection = db_con;
-            delete_cmd.CommandText = del_sql;
+            delete_cmd.CommandText = "DELETE FROM students WHERE id=@id;";
+            par_del_id = new SqlParameter("@id", SqlDbType.Int);
             delete_cmd.Parameters.Add(par_del_id);
         }
 
-        /* User defined function RefreshGridData():
-         *  Clears datagridview1's old data and fills with new data
-         */
+        // User defined function RefreshGridData(): Clears datagridview1's DataSet and fills with new data using ADO SqlDataAdapter
         public void RefreshGridData()
         {
             grid_ds.Clear();
@@ -98,12 +92,12 @@ namespace Ex_10
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            init_db();
+            init_db_connection();
             groupBox_Inputs.Visible = false;
             RefreshGridData();
         }
 
-        private void btn_Add_Click(object sender, EventArgs e)
+        private void btn_add_Click(object sender, EventArgs e)
         {
             txt_id.Clear();
             txt_rno.Clear();
@@ -116,7 +110,7 @@ namespace Ex_10
             groupBox_Inputs.Visible = true;
         }
 
-        private void btn_Edit_Click(object sender, EventArgs e)
+        private void btn_edit_Click(object sender, EventArgs e)
         {
             if (dataGridView1.CurrentRow != null)
             {   
@@ -132,8 +126,8 @@ namespace Ex_10
 
                 groupBox_Inputs.Visible = true;
             }
+            else MessageBox.Show("No Records selected.");
         }
-
 
         private void btn_save_Click(object sender, EventArgs e)
         {
@@ -155,23 +149,23 @@ namespace Ex_10
             {
                 case "Add":
                     {
-                        par_add_rno.Value = txt_rno.Text;
-                        par_add_name.Value = txt_name.Text;
-                        par_add_dept.Value = cmb_deptname.SelectedItem.ToString();
-                        par_add_addr.Value = txt_address.Text;
-                        par_add_mob.Value = txt_mobile.Text;
-                        result = add_cmd.ExecuteNonQuery();
+                        par_insert_rno.Value = txt_rno.Text;
+                        par_insert_name.Value = txt_name.Text;
+                        par_insert_dept.Value = cmb_deptname.SelectedItem.ToString();
+                        par_insert_addr.Value = txt_address.Text;
+                        par_insert_mob.Value = txt_mobile.Text;
+                        result = insertcmd.ExecuteNonQuery();
                     }
                     break;
 
                 case "Edit":
-                    par_edit_id.Value = txt_id.Text;
-                    par_edit_rno.Value = txt_rno.Text;
-                    par_edit_name.Value = txt_name.Text;
-                    par_edit_dept.Value = cmb_deptname.SelectedItem.ToString();
-                    par_edit_addr.Value = txt_address.Text;
-                    par_edit_mob.Value = txt_mobile.Text;
-                    result = insert_cmd.ExecuteNonQuery();
+                    par_update_id.Value = txt_id.Text;
+                    par_update_rno.Value = txt_rno.Text;
+                    par_update_name.Value = txt_name.Text;
+                    par_update_dept.Value = cmb_deptname.SelectedItem.ToString();
+                    par_update_addr.Value = txt_address.Text;
+                    par_update_mob.Value = txt_mobile.Text;
+                    result = update_cmd.ExecuteNonQuery();
                     break;
             }
 
@@ -185,7 +179,7 @@ namespace Ex_10
             }
         }
 
-        private void btn_Delete_Click(object sender, EventArgs e)
+        private void btn_delete_Click(object sender, EventArgs e)
         {
             int id_to_del = 0;
 
@@ -213,6 +207,5 @@ namespace Ex_10
         {
             db_con.Close();
         }
-
     }
 }
