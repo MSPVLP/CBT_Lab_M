@@ -51,40 +51,29 @@ namespace Ex_10
             insertcmd = new SqlCommand();
             insertcmd.Connection = db_con;
             insertcmd.CommandText = "INSERT INTO students (roll_no,stud_name,dept_name,address,mobile_no) VALUES (@rno,@name,@dept,@addr,@mob)";
-            par_insert_rno = new SqlParameter("@rno", SqlDbType.Int);
-            par_insert_name = new SqlParameter("@name", SqlDbType.VarChar, 50);
-            par_insert_dept = new SqlParameter("@dept", SqlDbType.VarChar, 50);
-            par_insert_addr = new SqlParameter("@addr", SqlDbType.VarChar, 150);
-            par_insert_mob = new SqlParameter("@mob", SqlDbType.VarChar, 10);
-            insertcmd.Parameters.Add(par_insert_rno);
-            insertcmd.Parameters.Add(par_insert_name);
-            insertcmd.Parameters.Add(par_insert_dept);
-            insertcmd.Parameters.Add(par_insert_addr);
-            insertcmd.Parameters.Add(par_insert_mob);
+            par_insert_rno = insertcmd.Parameters.Add("@rno", SqlDbType.Int);
+            par_insert_name = insertcmd.Parameters.Add("@name", SqlDbType.VarChar, 50);
+            par_insert_dept = insertcmd.Parameters.Add("@dept", SqlDbType.VarChar, 50);
+            par_insert_addr = insertcmd.Parameters.Add("@addr", SqlDbType.VarChar, 150);
+            par_insert_mob = insertcmd.Parameters.Add("@mob", SqlDbType.VarChar, 10);
 
             // Objects for Edit record
             update_cmd = new SqlCommand();
             update_cmd.Connection = db_con;
             update_cmd.CommandText = "UPDATE students SET roll_no=@rno, stud_name=@stud_name,dept_name=@dept,address=@addr,mobile_no=@mob WHERE id=@id";
-            par_update_id = new SqlParameter("@id", SqlDbType.Int);
-            par_update_rno = new SqlParameter("@rno", SqlDbType.Int);
-            par_update_name = new SqlParameter("@stud_name", SqlDbType.VarChar, 50);
-            par_update_dept = new SqlParameter("@dept", SqlDbType.VarChar, 50);
-            par_update_addr = new SqlParameter("@addr", SqlDbType.VarChar, 150);
-            par_update_mob = new SqlParameter("@mob", SqlDbType.VarChar, 10);
-            update_cmd.Parameters.Add(par_update_id);
-            update_cmd.Parameters.Add(par_update_rno);
-            update_cmd.Parameters.Add(par_update_name);
-            update_cmd.Parameters.Add(par_update_dept);
-            update_cmd.Parameters.Add(par_update_addr);
-            update_cmd.Parameters.Add(par_update_mob);
+            par_update_id = update_cmd.Parameters.Add("@id", SqlDbType.Int);
+            par_update_rno = update_cmd.Parameters.Add("@rno", SqlDbType.Int);
+            par_update_name = update_cmd.Parameters.Add("@stud_name", SqlDbType.VarChar, 50);
+            par_update_dept = update_cmd.Parameters.Add("@dept", SqlDbType.VarChar, 50);
+            par_update_addr = update_cmd.Parameters.Add("@addr", SqlDbType.VarChar, 150);
+            par_update_mob = update_cmd.Parameters.Add("@mob", SqlDbType.VarChar, 10);
+            
 
             // Objects for Delete record
             delete_cmd = new SqlCommand();
             delete_cmd.Connection = db_con;
             delete_cmd.CommandText = "DELETE FROM students WHERE id=@id;";
-            par_del_id = new SqlParameter("@id", SqlDbType.Int);
-            delete_cmd.Parameters.Add(par_del_id);
+            par_del_id = delete_cmd.Parameters.Add("@id", SqlDbType.Int);
         }
 
         // User defined function RefreshGridData(): Clears datagridview1's DataSet and fills with new data using ADO SqlDataAdapter
@@ -105,13 +94,8 @@ namespace Ex_10
 
         private void btn_add_Click(object sender, EventArgs e)
         {
-            txt_id.Clear();
-            txt_rno.Clear();
-            txt_name.Clear();
-            txt_address.Clear();
-            txt_mobile.Clear();
+            txt_id.Text = txt_rno.Text = txt_name.Text = txt_address.Text = txt_mobile.Text = "";
             cmb_deptname.SelectedItem = null;
-            lbl_Operation.Text = "";
             lbl_Operation.Text = "Add";
             groupBox_Inputs.Visible = true;
         }
@@ -139,6 +123,7 @@ namespace Ex_10
 
         private void btn_save_Click(object sender, EventArgs e)
         {
+            /* OPTIONAL : Input Validation 
             if (String.IsNullOrEmpty(txt_rno.Text) | String.IsNullOrEmpty(txt_name.Text)
                         | String.IsNullOrEmpty(txt_address.Text) | String.IsNullOrEmpty(txt_mobile.Text) | cmb_deptname.SelectedItem is null)
             {
@@ -150,6 +135,7 @@ namespace Ex_10
                 MessageBox.Show("Enter only numbers for Roll No.", "Save");
                 return;
             }
+            /* ---- */
 
             int result = 0;
 
@@ -176,7 +162,6 @@ namespace Ex_10
                     result = update_cmd.ExecuteNonQuery();
                     break;
             }
-
             if (result == -1)
                 MessageBox.Show("Error occured.");
             else
@@ -198,17 +183,20 @@ namespace Ex_10
                 MessageBox.Show("No Records selected.","Delete");
                 return;
             }
-            // Confirm with user if he wants to delete
+            
+            /* OPTIONAL : Confirm with user if he wants to delete */
+
             string message = "Are you sure you want to delete student ID " + id_to_del.ToString() + " ?";
             DialogResult choice = MessageBox.Show(message, "Delete", MessageBoxButtons.YesNo);
-            if (choice == DialogResult.Yes)
-            {
-                par_del_id.Value = id_to_del;
-                int result = delete_cmd.ExecuteNonQuery();
-                MessageBox.Show("Deleted " + result.ToString() + " record.", "Delete");
-                groupBox_Inputs.Visible = false;
-                RefreshGridData();
-            }
+            if (choice == DialogResult.No)
+                return;
+            /* -------  */
+
+            par_del_id.Value = id_to_del;
+            int result = delete_cmd.ExecuteNonQuery();
+            MessageBox.Show("Deleted " + result.ToString() + " record.", "Delete");
+            groupBox_Inputs.Visible = false;
+            RefreshGridData();
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
