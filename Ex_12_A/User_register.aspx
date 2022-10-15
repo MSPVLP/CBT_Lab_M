@@ -1,18 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="login_validation.aspx.cs" Inherits="Ex_12.login_validation" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="User_register.aspx.cs" Inherits="Ex_12_A.User_register" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <style type="text/css">
-        .auto-style1 {
-            width: 334px;
-        }
-        .auto-style2 {
-            width: 350px;
-        }
-    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -84,13 +76,14 @@
                    <asp:Button ID="btnlogin" runat="server" 
 				OnClick="btnlogin_Click" Text="Register" />
                 </td>
-                <td> </td>
+                <td> 
+                    <asp:ScriptManager ID="ScriptManager1" runat="server">
+                    </asp:ScriptManager>
+                </td>
             </tr>
         </table>
     </fieldset>
     </div>
-        <asp:ScriptManager ID="ScriptManager1" runat="server">
-        </asp:ScriptManager>
     </form>
 </body>
 </html>
